@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Hub Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0c12; font-family: 'Inter', sans-serif; color: #eef2ff; padding: 2rem; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #FFD966; margin-bottom: 2rem; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 16px; text-align: center; }
+        .stat-card i { font-size: 2rem; color: #FFB347; }
+        .stat-value { font-size: 1.5rem; font-weight: 800; }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .tab-btn { background: #1e293b; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; color: white; }
+        .tab-btn.active { background: #FFB347; color: #0a0c12; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .search-bar { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .search-input { padding: 10px; background: #1e293b; border: none; border-radius: 40px; color: white; flex: 1; }
+        .add-btn { background: #10b981; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; color: white; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.03); border-radius: 16px; overflow: hidden; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: #FFD966; }
+        .edit-btn { background: #3b82f6; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; color: white; margin-right: 5px; }
+        .delete-btn { background: #ef4444; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; color: white; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: #0f111a; padding: 2rem; border-radius: 24px; width: 90%; max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #a3b3d6; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #1e293b; border: none; border-radius: 12px; color: white; }
+        .save-btn { background: #10b981; border: none; padding: 10px; border-radius: 40px; cursor: pointer; color: white; width: 100%; }
+        .cancel-btn { background: #475569; border: none; padding: 10px; border-radius: 40px; cursor: pointer; color: white; width: 100%; margin-top: 0.5rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: white; }
+        .badge-display { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; }
+        .badge-paying { background: #10b981; }
+        .badge-new { background: #3b82f6; }
+        .badge-hot { background: #ef4444; }
+        .table-image { width: 40px; height: 40px; border-radius: 10px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; background: #667eea; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1><i class="fas fa-database"></i> Painel Administrativo</h1>
+    
+    <div class="stats" id="stats"></div>
+    
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="platforms">📱 Plataformas</button>
+        <button class="tab-btn" data-tab="testimonials">💬 Depoimentos</button>
+        <button class="tab-btn" data-tab="activities">📰 Atividades</button>
+        <button class="tab-btn" data-tab="leads">📞 Leads</button>
+        <button class="tab-btn" data-tab="settings">⚙️ Configurações</button>
+    </div>
+    
+    <!-- Plataformas -->
+    <div id="tab-platforms" class="tab-content active">
+        <div class="search-bar"><input type="text" id="searchPlatform" class="search-input" placeholder="Buscar..."><button id="addPlatformBtn" class="add-btn"><i class="fas fa-plus"></i> Nova</button></div>
+        <div class="table-container"><table><thead><tr><th>Imagem</th><th>Nome</th><th>Domínio</th><th>Tipo</th><th>Badge</th><th>Hot</th><th>Ações</th></tr></thead><tbody id="platformsTable"></tbody></table></div>
+    </div>
+    
+    <!-- Depoimentos -->
+    <div id="tab-testimonials" class="tab-content">
+        <div class="search-bar"><input type="text" id="searchTestimonial" class="search-input" placeholder="Buscar..."><button id="addTestimonialBtn" class="add-btn"><i class="fas fa-plus"></i> Novo</button></div>
+        <div class="table-container"><table><thead><tr><th>Nome</th><th>Depoimento</th><th>Avaliação</th><th>Ativo</th><th>Ações</th></tr></thead><tbody id="testimonialsTable"></tbody></table></div>
+    </div>
+    
+    <!-- Atividades -->
+    <div id="tab-activities" class="tab-content">
+        <div class="search-bar"><button id="addActivityBtn" class="add-btn"><i class="fas fa-plus"></i> Nova Atividade</button></div>
+        <div class="table-container"><table><thead><tr><th>Usuário</th><th>Tipo</th><th>Plataforma</th><th>Valor</th><th>Data</th><th>Ações</th></tr></thead><tbody id="activitiesTable"></tbody></table></div>
+    </div>
+    
+    <!-- Leads -->
+    <div id="tab-leads" class="tab-content">
+        <div class="search-bar"><input type="text" id="searchLead" class="search-input" placeholder="Buscar WhatsApp..."></div>
+        <div class="table-container"><table><thead><tr><th>WhatsApp</th><th>Data</th><th>Ações</th></tr></thead><tbody id="leadsTable"></tbody></table></div>
+    </div>
+    
+    <!-- Configurações -->
+    <div id="tab-settings" class="tab-content">
+        <form id="settingsForm">
+            <div class="form-group"><label>Título do Site</label><input type="text" id="site_title"></div>
+            <div class="form-group"><label>Subtítulo</label><input type="text" id="site_subtitle"></div>
+            <div class="form-group"><label>Título Hero</label><input type="text" id="hero_title"></div>
+            <div class="form-group"><label>Subtítulo Hero</label><textarea id="hero_subtitle" rows="2"></textarea></div>
+            <div class="form-group"><label>Link Grupo WhatsApp</label><input type="url" id="whatsapp_group_link"></div>
+            <button type="submit" class="save-btn">Salvar Configurações</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="genericModal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle">Título</h2><button class="close-modal" id="closeModalBtn">&times;</button></div><div id="modalBody"></div><button id="modalSaveBtn" class="save-btn" style="margin-top:1rem">Salvar</button><button id="modalCancelBtn" class="cancel-btn">Cancelar</button></div></div>
+
+<script>
+const API_URL = '/api';
+let token = localStorage.getItem('hub_auth_token');
+if (!token) window.location.href = 'index.html';
+
+async function apiRequest(endpoint, options = {}) {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+        ...options,
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    });
+    if (res.status === 401) { localStorage.removeItem('hub_auth_token'); window.location.href = 'index.html'; }
+    return res.json();
+}
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+        if (btn.dataset.tab === 'platforms') loadPlatforms();
+        if (btn.dataset.tab === 'testimonials') loadTestimonials();
+        if (btn.dataset.tab === 'activities') loadActivities();
+        if (btn.dataset.tab === 'leads') loadLeads();
+        if (btn.dataset.tab === 'settings') loadSettings();
+    };
+});
+
+async function loadStats() {
+    const stats = await apiRequest('/stats');
+    const full = await apiRequest('/admin/stats/full');
+    document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><i class="fas fa-layer-group"></i><div class="stat-value">${full.data?.platforms || 0}</div><div>Plataformas</div></div>
+        <div class="stat-card"><i class="fas fa-fire"></i><div class="stat-value">${stats.data?.hot || 0}</div><div>Hot</div></div>
+        <div class="stat-card"><i class="fas fa-coins"></i><div class="stat-value">${stats.data?.pagando || 0}</div><div>Pagando</div></div>
+        <div class="stat-card"><i class="fas fa-rocket"></i><div class="stat-value">${stats.data?.lancamento || 0}</div><div>Lançamento</div></div>
+    `;
+}
+
+// Plataformas
+async function loadPlatforms() {
+    const res = await apiRequest('/admin/platforms');
+    if (res.success) {
+        const search = document.getElementById('searchPlatform')?.value.toLowerCase() || '';
+        const filtered = res.data.filter(p => p.name.toLowerCase().includes(search) || p.domain.toLowerCase().includes(search));
+        document.getElementById('platformsTable').innerHTML = filtered.map(p => `
+            <tr>
+                <td><div class="table-image" style="${p.image ? `background-image:url('${p.image}')` : ''}"><i class="fas fa-trophy"></i></div></td>
+                <td><strong>${p.name}</strong></td>
+                <td>${p.domain}</td>
+                <td>${p.type === 'pagando' ? '💰 Pagando' : p.type === 'lancamento' ? '🚀 Lançamento' : '⭐ Destaque'}</td>
+                <td>${p.badge ? `<span class="badge-display badge-paying">${p.badge}</span>` : '-'}</td>
+                <td>${p.hot ? '🔥 Sim' : '❌ Não'}</td>
+                <td><button class="edit-btn" onclick="editPlatform('${p._id}')">Editar</button><button class="delete-btn" onclick="deletePlatform('${p._id}')">Excluir</button></td>
+            </tr>
+        `).join('');
+    }
+}
+document.getElementById('searchPlatform')?.addEventListener('input', () => loadPlatforms());
+window.editPlatform = async (id) => {
+    const res = await apiRequest('/admin/platforms');
+    const platform = res.data.find(p => p._id === id);
+    openModal('Editar Plataforma', `
+        <div class="form-group"><label>Nome</label><input id="name" value="${platform.name}"></div>
+        <div class="form-group"><label>Domínio</label><input id="domain" value="${platform.domain}"></div>
+        <div class="form-group"><label>Tipo</label><select id="type"><option ${platform.type === 'pagando' ? 'selected' : ''} value="pagando">Pagando</option><option ${platform.type === 'lancamento' ? 'selected' : ''} value="lancamento">Lançamento</option><option ${platform.type === 'destaque' ? 'selected' : ''} value="destaque">Destaque</option></select></div>
+        <div class="form-group"><label>Hot</label><select id="hot"><option ${platform.hot ? 'selected' : ''} value="true">Sim</option><option ${!platform.hot ? 'selected' : ''} value="false">Não</option></select></div>
+        <div class="form-group"><label>Badge</label><input id="badge" value="${platform.badge || ''}"></div>
+        <div class="form-group"><label>Imagem URL</label><input id="image" value="${platform.image || ''}"></div>
+        <div class="form-group"><label>Link</label><input id="link" value="${platform.link}"></div>
+    `, async () => {
+        await apiRequest(`/admin/platforms/${id}`, { method: 'PUT', body: JSON.stringify({
+            name: document.getElementById('name').value,
+            domain: document.getElementById('domain').value,
+            type: document.getElementById('type').value,
+            hot: document.getElementById('hot').value === 'true',
+            badge: document.getElementById('badge').value || null,
+            image: document.getElementById('image').value || null,
+            link: document.getElementById('link').value
+        }) });
+        loadPlatforms(); loadStats();
+    });
+};
+window.deletePlatform = async (id) => { if(confirm('Excluir?')) { await apiRequest(`/admin/platforms/${id}`, { method: 'DELETE' }); loadPlatforms(); loadStats(); } };
+document.getElementById('addPlatformBtn').onclick = () => openModal('Nova Plataforma', `
+    <div class="form-group"><label>Nome</label><input id="name" placeholder="Ex: EE44"></div>
+    <div class="form-group"><label>Domínio</label><input id="domain" placeholder="EE44.COM"></div>
+    <div class="form-group"><label>Tipo</label><select id="type"><option value="pagando">Pagando</option><option value="lancamento">Lançamento</option><option value="destaque">Destaque</option></select></div>
+    <div class="form-group"><label>Hot</label><select id="hot"><option value="true">Sim</option><option value="false" selected>Não</option></select></div>
+    <div class="form-group"><label>Badge</label><input id="badge" placeholder="Badge personalizada"></div>
+    <div class="form-group"><label>Imagem URL</label><input id="image" placeholder="https://..."></div>
+    <div class="form-group"><label>Link</label><input id="link" placeholder="https://..."></div>
+`, async () => {
+    await apiRequest('/admin/platforms', { method: 'POST', body: JSON.stringify({
+        name: document.getElementById('name').value,
+        domain: document.getElementById('domain').value,
+        type: document.getElementById('type').value,
+        hot: document.getElementById('hot').value === 'true',
+        badge: document.getElementById('badge').value || null,
+        image: document.getElementById('image').value || null,
+        link: document.getElementById('link').value
+    }) });
+    loadPlatforms(); loadStats();
+});
+
+// Depoimentos
+async function loadTestimonials() {
+    const res = await apiRequest('/admin/testimonials');
+    if (res.success) {
+        const search = document.getElementById('searchTestimonial')?.value.toLowerCase() || '';
+        const filtered = res.data.filter(t => t.name.toLowerCase().includes(search));
+        document.getElementById('testimonialsTable').innerHTML = filtered.map(t => `
+            <tr>
+                <td><strong>${t.name}</strong></td>
+                <td>${t.text.substring(0, 50)}...</td> <td>${'⭐'.repeat(t.rating)}</td>
+                <td>${t.active ? '✅ Ativo' : '❌ Inativo'}</td>
+                <td><button class="edit-btn" onclick="editTestimonial('${t._id}')">Editar</button><button class="delete-btn" onclick="deleteTestimonial('${t._id}')">Excluir</button></td>
+            </tr>
+        `).join('');
+    }
+}
+document.getElementById('searchTestimonial')?.addEventListener('input', () => loadTestimonials());
+window.editTestimonial = async (id) => {
+    const res = await apiRequest('/admin/testimonials');
+    const t = res.data.find(t => t._id === id);
+    openModal('Editar Depoimento', `
+        <div class="form-group"><label>Nome</label><input id="name" value="${t.name}"></div>
+        <div class="form-group"><label>Depoimento</label><textarea id="text" rows="3">${t.text}</textarea></div>
+        <div class="form-group"><label>Avaliação (1-5)</label><input id="rating" type="number" min="1" max="5" value="${t.rating}"></div>
+        <div class="form-group"><label>Ativo</label><select id="active"><option ${t.active ? 'selected' : ''} value="true">Sim</option><option ${!t.active ? 'selected' : ''} value="false">Não</option></select></div>
+    `, async () => {
+        await apiRequest(`/admin/testimonials/${id}`, { method: 'PUT', body: JSON.stringify({
+            name: document.getElementById('name').value,
+            text: document.getElementById('text').value,
+            rating: parseInt(document.getElementById('rating').value),
+            active: document.getElementById('active').value === 'true'
+        }) });
+        loadTestimonials(); loadStats();
+    });
+};
+window.deleteTestimonial = async (id) => { if(confirm('Excluir?')) { await apiRequest(`/admin/testimonials/${id}`, { method: 'DELETE' }); loadTestimonials(); loadStats(); } };
+document.getElementById('addTestimonialBtn').onclick = () => openModal('Novo Depoimento', `
+    <div class="form-group"><label>Nome</label><input id="name"></div>
+    <div class="form-group"><label>Depoimento</label><textarea id="text" rows="3"></textarea></div>
+    <div class="form-group"><label>Avaliação (1-5)</label><input id="rating" type="number" min="1" max="5" value="5"></div>
+    <div class="form-group"><label>Ativo</label><select id="active"><option value="true">Sim</option><option value="false">Não</option></select></div>
+`, async () => {
+    await apiRequest('/admin/testimonials', { method: 'POST', body: JSON.stringify({
+        name: document.getElementById('name').value,
+        text: document.getElementById('text').value,
+        rating: parseInt(document.getElementById('rating').value),
+        active: document.getElementById('active').value === 'true'
+    }) });
+    loadTestimonials(); loadStats();
+});
+
+// Atividades
+async function loadActivities() {
+    const res = await apiRequest('/activity');
+    if (res.success) {
+        document.getElementById('activitiesTable').innerHTML = res.data.map(a => `
+            <tr>
+                <td>${a.user}</td>
+                <td>${a.type}</td> <td>${a.platform || '-'}</td>
+                <td>${a.amount ? `R$ ${a.amount}` : '-'}</td>
+                <td>${new Date(a.createdAt).toLocaleString()}</td>
+                <td><button class="delete-btn" onclick="deleteActivity('${a._id}')">Excluir</button></td>
+            </tr>
+        `).join('');
+    }
+}
+window.deleteActivity = async (id) => { if(confirm('Excluir?')) { await apiRequest(`/admin/activities/${id}`, { method: 'DELETE' }); loadActivities(); loadStats(); } };
+document.getElementById('addActivityBtn').onclick = () => openModal('Nova Atividade', `
+    <div class="form-group"><label>Tipo</label><select id="type"><option value="saque">Saque</option><option value="nova_plataforma">Nova Plataforma</option><option value="topo_ranking">Topo Ranking</option><option value="cadastro">Cadastro</option></select></div>
+    <div class="form-group"><label>Usuário</label><input id="user"></div>
+    <div class="form-group"><label>Plataforma</label><input id="platform"></div>
+    <div class="form-group"><label>Valor (R$)</label><input id="amount" type="number"></div>
+`, async () => {
+    await apiRequest('/admin/activities', { method: 'POST', body: JSON.stringify({
+        type: document.getElementById('type').value,
+        user: document.getElementById('user').value,
+        platform: document.getElementById('platform').value || null,
+        amount: parseInt(document.getElementById('amount').value) || null
+    }) });
+    loadActivities(); loadStats();
+});
+
+// Leads
+async function loadLeads() {
+    const res = await apiRequest('/admin/leads');
+    if (res.success) {
+        const search = document.getElementById('searchLead')?.value.toLowerCase() || '';
+        const filtered = res.data.filter(l => l.whatsapp.includes(search));
+        document.getElementById('leadsTable').innerHTML = filtered.map(l => `
+            <tr>
+                <td>${l.whatsapp}</td>
+                <td>${new Date(l.createdAt).toLocaleString()}</td>
+                <td><button class="delete-btn" onclick="deleteLead('${l._id}')">Excluir</button></td>
+            </tr>
+        `).join('');
+    }
+}
+window.deleteLead = async (id) => { if(confirm('Excluir?')) { await apiRequest(`/admin/leads/${id}`, { method: 'DELETE' }); loadLeads(); loadStats(); } };
+document.getElementById('searchLead')?.addEventListener('input', () => loadLeads());
+
+// Configurações
+async function loadSettings() {
+    const res = await apiRequest('/admin/settings');
+    if (res.success) {
+        document.getElementById('site_title').value = res.data.site_title || '';
+        document.getElementById('site_subtitle').value = res.data.site_subtitle || '';
+        document.getElementById('hero_title').value = res.data.hero_title || '';
+        document.getElementById('hero_subtitle').value = res.data.hero_subtitle || '';
+        document.getElementById('whatsapp_group_link').value = res.data.whatsapp_group_link || '';
+    }
+}
+document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await apiRequest('/admin/settings', { method: 'PUT', body: JSON.stringify({
+        site_title: document.getElementById('site_title').value,
+        site_subtitle: document.getElementById('site_subtitle').value,
+        hero_title: document.getElementById('hero_title').value,
+        hero_subtitle: document.getElementById('hero_subtitle').value,
+        whatsapp_group_link: document.getElementById('whatsapp_group_link').value
+    }) });
+    alert('Configurações salvas!');
+});
+
+// Modal
+const modal = document.getElementById('genericModal');
+function openModal(title, bodyHtml, onSave) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalBody').innerHTML = bodyHtml;
+    modal.classList.add('active');
+    const saveBtn = document.getElementById('modalSaveBtn');
+    const newSaveBtn = saveBtn.cloneNode(true);
+    saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
+    newSaveBtn.id = 'modalSaveBtn';
+    newSaveBtn.onclick = async () => { await onSave(); modal.classList.remove('active'); };
+    document.getElementById('modalCancelBtn').onclick = () => modal.classList.remove('active');
+    document.getElementById('closeModalBtn').onclick = () => modal.classList.remove('active');
+}
+
+loadStats();
+loadPlatforms();
+loadTestimonials();
+loadActivities();
+loadLeads();
+loadSettings();
+</script>
+</body>
+</html>

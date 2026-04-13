@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hub Premium | Plataformas que Pagam Agora</title>
+    <meta name="description" content="Descubra as melhores plataformas que estão pagando agora. Mais de R$1.2 milhão em pagamentos.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-content">
+        <i class="fas fa-bolt"></i>
+        <span>⚠️ ATENÇÃO: Apenas <strong id="countdown">24h</strong> para acessar as plataformas em destaque!</span>
+        <i class="fas fa-fire"></i>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo">
+            <i class="fas fa-crown"></i>
+            <span>Hub<span class="logo-highlight">Premium</span></span>
+        </div>
+        <nav class="main-nav">
+            <a href="#home" class="nav-link active">Início</a>
+            <a href="#plataformas" class="nav-link">Plataformas</a>
+            <a href="#ranking" class="nav-link">Ranking</a>
+            <a href="#depoimentos" class="nav-link">Depoimentos</a>
+            <a href="quem-somos.html" class="nav-link">Quem Somos</a>
+        </nav>
+        <!-- ÚNICO BOTÃO WHATSAPP - SOMENTE AQUI -->
+        <button class="whatsapp-btn-header" id="whatsappBtnHeader">
+            <i class="fab fa-whatsapp"></i> Grupo VIP
+        </button>
+    </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-section" id="home">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>+100 Plataformas Verificadas</span>
+            </div>
+            <h1 class="hero-title">Descubra plataformas que <span class="highlight">estão pagando agora</span></h1>
+            <p class="hero-subtitle">Atualizado diariamente com as melhores oportunidades de ganhar dinheiro online. Mais de <strong>50.000 usuários</strong> já estão lucrando!</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" id="scrollToPlatforms"><i class="fas fa-arrow-right"></i> Acessar plataformas agora</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><i class="fas fa-chart-line"></i><span id="statPayments">R$ 1.2M+</span><small>em pagamentos</small></div>
+                <div class="stat-item"><i class="fas fa-users"></i><span id="statUsers">50K+</span><small>usuários ativos</small></div>
+                <div class="stat-item"><i class="fas fa-clock"></i><span id="statUpdates">12+</span><small>atualizações hoje</small></div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card card-1"><i class="fas fa-dollar-sign"></i><div><strong>Saque de R$500</strong><small>há 2 minutos</small></div></div>
+            <div class="floating-card card-2"><i class="fas fa-trophy"></i><div><strong>Top 1 da semana</strong><small>Plataforma EE44</small></div></div>
+            <div class="floating-card card-3"><i class="fas fa-fire"></i><div><strong id="newTodayBadge">+12 novas hoje</strong><small>Plataformas adicionadas</small></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST SECTION -->
+<section class="trust-section">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Por que confiar no Hub Premium?</h2>
+        <div class="trust-grid">
+            <div class="trust-card"><i class="fas fa-database"></i><h3>100+ Plataformas</h3><p>Todas verificadas e testadas</p></div>
+            <div class="trust-card"><i class="fas fa-clock"></i><h3>Atualização Diária</h3><p>Novas todos os dias</p></div>
+            <div class="trust-card"><i class="fas fa-users"></i><h3>Comunidade Ativa</h3><p>+50 mil usuários</p></div>
+            <div class="trust-card"><i class="fas fa-file-alt"></i><h3>Políticas Claras</h3><p>Transparência total</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ACTIVITY SECTION -->
+<section class="activity-section">
+    <div class="container">
+        <div class="activity-header">
+            <h2><i class="fas fa-waveform"></i> Atividade em tempo real</h2>
+            <span class="live-badge"><i class="fas fa-circle"></i> AO VIVO</span>
+        </div>
+        <div class="activity-feed" id="activityFeed">
+            <div class="activity-item"><i class="fas fa-dollar-sign"></i><span><strong>João S.</strong> sacou R$ 350,00 da plataforma EE44</span><small>agora mesmo</small></div>
+        </div>
+    </div>
+</section>
+
+<!-- RANKING SECTION -->
+<section class="ranking-section" id="ranking">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-chart-simple"></i> Top 5 Plataformas do Dia</h2>
+        <div class="ranking-container" id="rankingContainer"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Carregando...</div></div>
+    </div>
+</section>
+
+<!-- PLATFORMS SECTION -->
+<section class="platforms-section" id="plataformas">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-th-large"></i> Plataformas em Destaque</h2>
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all"><i class="fas fa-globe"></i> Todas</button>
+                <button class="filter-btn" data-filter="pagando"><i class="fas fa-coins"></i> Pagando Agora</button>
+                <button class="filter-btn" data-filter="lancamento"><i class="fas fa-rocket"></i> Lançamento</button>
+                <button class="filter-btn" data-filter="destaque"><i class="fas fa-star"></i> Destaque Ouro</button>
+            </div>
+        </div>
+        <div id="platformsGrid" class="platforms-grid"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>Carregando plataformas...</p></div></div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="testimonials-section" id="depoimentos">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-comment-dots"></i> O que nossos usuários dizem</h2>
+        <div class="testimonials-grid" id="testimonialsContainer"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>Carregando depoimentos...</p></div></div>
+    </div>
+</section>
+
+<!-- NEWSLETTER SECTION -->
+<section class="newsletter-section">
+    <div class="newsletter-container">
+        <div class="newsletter-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <h2>🔥 Receba Oportunidades Exclusivas!</h2>
+        <p>Cadastre seu WhatsApp e receba as melhores plataformas antes de todo mundo</p>
+        <div class="newsletter-benefits">
+            <span><i class="fas fa-check-circle"></i> Notificações em tempo real</span>
+            <span><i class="fas fa-check-circle"></i> Ofertas exclusivas</span>
+            <span><i class="fas fa-check-circle"></i> Dicas e estratégias</span>
+        </div>
+        <form id="newsletterForm" class="newsletter-form">
+            <div class="input-group-newsletter">
+                <div class="input-icon"><i class="fab fa-whatsapp"></i></div>
+                <input type="tel" id="whatsappNumber" placeholder="(DDD) 9 9999-9999" required>
+                <button type="submit" class="btn-subscribe"><i class="fab fa-whatsapp"></i> Quero Receber <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="form-footer"><i class="fas fa-lock"></i><small>Seus dados estão 100% seguros. Não enviamos spam.</small></div>
+        </form>
+        <div class="newsletter-stats">
+            <div><span>+5.000</span><small>Usuários cadastrados</small></div>
+            <div><span>98%</span><small>Satisfação</small></div>
+            <div><span>24/7</span><small>Suporte</small></div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo"><i class="fas fa-crown"></i><span>Hub<span>Premium</span></span></div>
+                <p>O maior hub de plataformas que pagam do Brasil.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Links</h4>
+                <ul><li><a href="#home">Início</a></li><li><a href="#plataformas">Plataformas</a></li><li><a href="#ranking">Ranking</a></li><li><a href="quem-somos.html">Quem Somos</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul><li><a href="termos.html">Termos de Uso</a></li><li><a href="privacidade.html">Política de Privacidade</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <ul><li><i class="fas fa-envelope"></i> contato@hubpremium.com</li><li><i class="fab fa-whatsapp"></i> (11) 99999-9999</li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Hub Premium - Todos os direitos reservados</p>
+            <p class="disclaimer">Não somos afiliados às plataformas. Apenas fornecemos informações.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- BOTÃO FLUTUANTE DE BUSCA (APENAS BUSCA, SEM WHATSAPP) -->
+<div class="search-fab" id="searchFab">
+    <i class="fas fa-search"></i>
+    <span class="fab-label">Buscar</span>
+</div>
+
+<!-- MODAL DE PESQUISA -->
+<div class="search-modal" id="searchModal">
+    <div class="search-modal-content">
+        <div class="search-modal-header">
+            <h3><i class="fas fa-search"></i> Pesquisar Plataformas</h3>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <div class="search-modal-body">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search input-icon"></i>
+                <input type="text" id="modalSearchInput" placeholder="Digite o nome ou domínio da plataforma..." autocomplete="off">
+                <button id="clearModalSearch" class="clear-modal-search" style="display: none;"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="searchResults" class="search-results"><div class="no-results"><i class="fas fa-search"></i><p>Digite para buscar</p></div></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="js/funil.js"></script>
+</body>
+</html>
